@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="Lucas Gomes Folador">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/estilo.css" />
+<link th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" />
+<title>Carrinho de compras</title>
+</head>
+<body>
+
+	<div th:replace="cabecalho :: header"></div>
+
+	<div class="container">
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<h2 class="h2">Carrinho de compras</h2>
+			</div>
+		</div>
+
+		<div class="alert alert-success alert-dismissible fade show"
+			role="alert" th:if="${mensagem} != null">
+			<strong th:text="${mensagem}">Mensagem!</strong>
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+		<div id="mensagem_erro"
+			class="alert alert-danger alert-dismissible fade show" role="alert"
+			style="display: none;">
+			<strong>Erro ao cadastrar o produto!</strong>
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered tabela"
+				th:if="${carrinho != null && !carrinho.itens.empty}">
+
+				<tr class="thead-dark">
+					<th>Foto</th>
+					<th>Nome</th>
+					<th>Preço de venda</th>
+					<th>Descrição</th>
+					<th>Quantidade</th>
+					<th>Subtotal</th>
+				</tr>
+				<tr th:each="item : ${carrinho.itens}">
+					<td><img height="50" width="50"
+						th:src="@{'data:image/jpg;base64,' + ${T(org.springframework.util.Base64Utils).encodeToString(item.produto.foto)}}" />
+					</td>
+					<td th:text="${item.produto.nome}"></td>
+					<td class="precoVenda"
+						th:text="${#numbers.formatCurrency(item.produto.precoVenda)}"
+						id="precoVenda"></td>
+					<td th:text="${item.produto.descricao}"></td>
+					<td><input th:value="${item.quantidade}" type="number" min="1"
+						id="qtde" name="qtde" class="form-control"></td>
+					<td><input type="text" class="form-control totalItem"
+						id="totalItem"
+						th:value="${'R$ ' + #numbers.formatDecimal(item.total, 1, 2, 'COMMA')}"
+						disabled="disabled"></td>
+				</tr>
+
+				<tfoot>
+					<tr>
+						<td colspan="6"><label for="totalCompra">Total da
+								compra</label><input class="form-control col-sm-3"
+							th:value="${#numbers.formatCurrency(carrinho.totalCompra)}"
+							id="totalCompra" type="text" disabled="disabled"></td>
+					</tr>
+				</tfoot>
+			</table>
+
+		</div>
+
+		<a th:if="${carrinho != null && !carrinho.itens.empty}"
+			class="btn btn-info text-white" th:href="@{/}"><i
+			class="fas fa-shopping-cart"></i> Continuar comprando! :)</a>
+
+		<div th:if="${carrinho != null && carrinho.itens.empty}"
+			th:text="${'Seu carrinho está vazio :('}"></div>
+
+		<br /> <a th:if="${carrinho != null && carrinho.itens.empty}"
+			class="btn btn-danger text-white" th:href="@{/}"><i
+			class="fas fa-cart-arrow-down"></i> Comprar agora!</a>
+
+	</div>
+
+	<div th:replace="rodape :: footer"></div>
+
+	<script th:src="@{/webjars/jquery/3.3.1-1/jquery.min.js}"></script>
+	<script
+		th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.bundle.min.js}"></script>
+	<script type="text/javascript">
+		$(document)
+				.on(
+						"change paste keyup",
+						"#qtde",
+						function() {
+							var $qtde = parseFloat($(this).val());
+
+							if ($qtde > 0) {
+								$(this)
+										.closest("tr")
+										.find(".precoVenda")
+										.each(
+												function(i) {
+													if (i == 0) {
+														var $valorProduto = (parseFloat($(
+																this).html()
+																.replace("R$",
+																		"")
+																.replace(",",
+																		".")) * $qtde);
+														$(this)
+																.closest("tr")
+																.find(
+																		"#totalItem")
+																.val(
+																		"R$ "
+																				+ $valorProduto
+																						.toFixed(
+																								2)
+																						.replace(
+																								".",
+																								","));
+													}
+												});
+
+								var $totalCompra = 0;
+
+								$(".tabela #totalItem").each(
+										function(i) {
+											var subTotal = parseFloat($(this)
+													.val().replace("R$", "")
+													.replace(",", "."));
+											$totalCompra += subTotal;
+										});
+
+								$("#totalCompra").val(
+										"R$ "
+												+ $totalCompra.toFixed(2)
+														.replace(".", ","));
+							}
+						});
+	</script>
+</body>
+</html>

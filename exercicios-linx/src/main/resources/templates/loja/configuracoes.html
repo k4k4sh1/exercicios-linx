@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="Lucas Gomes Folador">
+<link rel="stylesheet"
+	href="/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/estilo.css" />
+<link th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" />
+<title>Loja - Configurações</title>
+</head>
+<body>
+
+	<div th:replace="cabecalho :: header"></div>
+
+	<div class="container">
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<h2 class="h2">Loja - Configurações</h2>
+			</div>
+		</div>
+
+		<h5 class="h5">Informações</h5>
+		<div class="card">
+			<div class="card-body">
+
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="despesasTotais">Despesas totais</label> <input
+							class="form-control" id="despesasTotais" type="text"
+							th:field="*{loja.despesasTotais}" disabled="disabled">
+					</div>
+
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="margemLucro">Margem de lucro (%)</label> <input
+							class="form-control" id="margemLucro" type="text"
+							th:field="*{loja.margemLucro}" disabled="disabled">
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<br /> <a class="btn btn-info text-white" th:href="@{/loja/cadastro}"><i
+			class="fas fa-plus-circle"></i> Atualizar</a>
+
+	</div>
+
+	<div th:replace="rodape :: footer"></div>
+
+	<script th:src="@{/webjars/jquery/3.3.1-1/jquery.min.js}"></script>
+	<script
+		th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

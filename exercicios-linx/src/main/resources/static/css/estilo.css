@@ -1,0 +1,13 @@
+body {
+	margin-top: 80px;
+	margin-bottom: 50px;
+}
+
+.rodape {
+	background-color: #4d4d4d;
+	color: white;
+	position: fixed;
+	bottom: 0;
+	height: 30px;
+	width: 100%;
+}
