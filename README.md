@@ -1,3 +1,5 @@
 # exercicios-linx
 
-- Banco utilizado h2
+- Backend: Java
+- Frontend: Thymeleaf
+- Banco de dados: H2
