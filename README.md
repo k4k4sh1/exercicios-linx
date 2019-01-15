@@ -1,5 +1,5 @@
 # exercicios-linx
 
-- Backend: Java
+- Backend: Spring Boot / Java
 - Frontend: Thymeleaf
 - Banco de dados: H2
